@@ -24,7 +24,7 @@ const App = () => {
     <NavigationContainer>
     <Stack.Navigator initialRouteName="SignIn">
       <Stack.Screen name="ChatScreen" component={ChatScreen} options={{headerShown:false}} />
-      <Stack.Screen name="SignIn" component={SignIn} />
+      <Stack.Screen name="SignIn" component={SignIn} options={{headerShown:false}}/>
       <Stack.Screen name="Inbox" component={Inbox} options={{headerShown:false}} />
     </Stack.Navigator>
   </NavigationContainer>
