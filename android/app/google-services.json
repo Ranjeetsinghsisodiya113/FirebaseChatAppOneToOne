@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "731423889044",
+    "firebase_url": "https://draganddrop-478ec-default-rtdb.firebaseio.com",
+    "project_id": "draganddrop-478ec",
+    "storage_bucket": "draganddrop-478ec.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:731423889044:android:67060a3d4af0fbecda8681",
+        "android_client_info": {
+          "package_name": "com.draganddropgame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "731423889044-9snkmh2khk226iv9udjp01d1vu1s0ks5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.draganddropgame",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "731423889044-230q1i4bbh9a7cs1nrk55g91tvf5ubqt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDHvKLinja3HthYfYiGCZ_bPUuIxfU1jg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "731423889044-230q1i4bbh9a7cs1nrk55g91tvf5ubqt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
