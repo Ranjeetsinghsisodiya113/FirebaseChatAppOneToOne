@@ -109,7 +109,7 @@ const Inbox = ({ navigation }) => {
       keyExtractor={(item) => item.userId}
       renderItem={({ item }) => (
         <TouchableOpacity
-          onPress={() => handleUserPress(item.userId, item.name)}
+          onPress={() => handleUserPress(item.userId, item.name,item.token_id)}
           style={styles.userCard}
           activeOpacity={0.7}
         >

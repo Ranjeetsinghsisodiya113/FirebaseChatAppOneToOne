@@ -1,13 +1,183 @@
-import { SafeAreaView,StyleSheet, Text, View } from 'react-native'
+// import React, { useEffect } from 'react';
+// import { View, Text, Alert, Button } from 'react-native';
+// import messaging from '@react-native-firebase/messaging';
+// import notifee, {AndroidImportance} from '@notifee/react-native';
+// import { localStorage } from './src/localstorageProvider';
+// const App = () => {
+
+
+//   // Test Local Notification
+  // const sendTestNotification = async () => {
+  //   await notifee.displayNotification({
+  //     title: 'Hey Sanjiv',
+  //     body: 'dekh idhr !',
+  //     android: {
+  //       channelId: 'default',
+  //     },
+  //   });
+  // };
+
+  // Request notification permissions on app launch
+  // const requestUserPermission = async () => {
+  //   const authStatus = await messaging().requestPermission();
+  //   const enabled =
+  //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+  //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+  //   if (enabled) {
+  //     console.log('Authorization status:', authStatus);
+  //     getFCMToken(); // Get FCM token
+  //   }
+  // };
+
+  // // Get FCM Token for the device
+  // const getFCMToken = async () => {
+  //   try {
+  //     const token = await messaging().getToken();
+  //     console.log('FCM Token:', token);
+  //     localStorage.setItemString("token_id",token)
+  //   } catch (error) {
+  //     console.error('Error fetching FCM token:', error);
+  //   }
+  // };
+
+  // // Handle foreground notifications
+  // const handleForegroundNotifications = () => {
+  //   return messaging().onMessage(async (remoteMessage) => {
+  //     console.log('Foreground Notification:', remoteMessage);
+  //     // Display notification using Notifee
+  //     await notifee.displayNotification({
+  //       title: remoteMessage.notification?.title || 'Notification',
+  //       body: remoteMessage.notification?.body || 'You have a new message.',
+  //       android: {
+  //         channelId: 'default',
+  //       },
+  //     });
+  //   });
+  // };
+
+  // // Create a notification channel for Android
+  // const createNotificationChannel = async () => {
+  //   await notifee.createChannel({
+  //     id: 'default',
+  //     name: 'Default Channel',
+  //     importance: AndroidImportance.HIGH, // Use the imported AndroidImportance
+  //   });
+  // };
+
+  // useEffect(() => {
+  //   // Request permissions and set up listeners
+  //   requestUserPermission();
+  //   createNotificationChannel();
+
+  //   const foregroundListener = handleForegroundNotifications();
+
+  //   // Handle background and quit state notifications
+  //   messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+  //     console.log('Background Notification:', remoteMessage);
+  //   });
+
+  //   return () => {
+  //     if (foregroundListener && typeof foregroundListener === 'function') {
+  //       foregroundListener(); // Call the unsubscribe function
+  //     }
+  //   };
+  // }, []);
+
+//   return (
+//     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+//       <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 20 }}>
+//         Firebase Push Notifications
+//       </Text>
+//       <Button title="Test Notification" onPress={sendTestNotification} />
+//     </View>
+//   );
+// };
+
+// export default App;
+
+
+
+import { StyleSheet, } from 'react-native'
 import React, { useEffect } from 'react'
 import SignIn from './src/SignIn'
 import { FirebaseApp } from '@react-native-firebase/app'; // This import is required to initialize Firebase
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ChatScreen from './src/ChatScreen';
+import messaging from '@react-native-firebase/messaging';
+import notifee, {AndroidImportance} from '@notifee/react-native';
+import { localStorage } from './src/localstorageProvider';
 import Inbox from './src/Inbox';
 const App = () => {
   const Stack = createStackNavigator();
+
+    // Request notification permissions on app launch
+    const requestUserPermission = async () => {
+      const authStatus = await messaging().requestPermission();
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  
+      if (enabled) {
+        console.log('Authorization status:', authStatus);
+        getFCMToken(); // Get FCM token
+      }
+    };
+  
+    // Get FCM Token for the device
+    const getFCMToken = async () => {
+      try {
+        const token = await messaging().getToken();
+        console.log('FCM Token:', token);
+        localStorage.setItemString("token_id",token)
+      } catch (error) {
+        console.error('Error fetching FCM token:', error);
+      }
+    };
+  
+    // Handle foreground notifications
+    const handleForegroundNotifications = () => {
+      return messaging().onMessage(async (remoteMessage) => {
+        console.log('Foreground Notification:', remoteMessage);
+        // Display notification using Notifee
+        await notifee.displayNotification({
+          title: remoteMessage.notification?.title || 'Notification',
+          body: remoteMessage.notification?.body || 'You have a new message.',
+          android: {
+            channelId: 'default',
+          },
+        });
+      });
+    };
+  
+    // Create a notification channel for Android
+    const createNotificationChannel = async () => {
+      await notifee.createChannel({
+        id: 'default',
+        name: 'Default Channel',
+        importance: AndroidImportance.HIGH, // Use the imported AndroidImportance
+      });
+    };
+  
+    useEffect(() => {
+      // Request permissions and set up listeners
+      requestUserPermission();
+      createNotificationChannel();
+  
+      const foregroundListener = handleForegroundNotifications();
+  
+      // Handle background and quit state notifications
+      messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+        console.log('Background Notification:', remoteMessage);
+      });
+  
+      return () => {
+        if (foregroundListener && typeof foregroundListener === 'function') {
+          foregroundListener(); // Call the unsubscribe function
+        }
+      };
+    }, []);
   useEffect(() => {
     // This will ensure Firebase is initialized
     const initializeFirebase = async () => {

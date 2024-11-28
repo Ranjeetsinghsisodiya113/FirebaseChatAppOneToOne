@@ -5,7 +5,7 @@ import auth from '@react-native-firebase/auth';
 import { generateChatId } from './chatFunctions';
 
 const ChatScreen = ({ route }) => {
-  const { userId, userName } = route.params; // userId and userName passed from Inbox
+  const { userId, userName,token_id } = route.params; // userId and userName passed from Inbox
   const currentUserId = auth().currentUser.uid;
 
   const [messages, setMessages] = useState([]);
@@ -36,6 +36,7 @@ const ChatScreen = ({ route }) => {
         timestamp: Date.now(),
       };
       await database().ref(`/chats/${chatId}/messages`).push(message);
+      //await sendNotification(token_id, message);
       setNewMessage('');
     }
   };

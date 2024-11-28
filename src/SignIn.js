@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, ToastAndroid, TouchableOpacity } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { addUserToDatabase } from './chatFunctions';
-
+import { localStorage } from '../src/localstorageProvider';
 const SignIn = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
@@ -28,13 +28,14 @@ const SignIn = ({ navigation }) => {
         }
 
         try {
-            await auth().createUserWithEmailAndPassword(email, password);
-            await addUserToDatabase(name)
-            setEmail("")
-            setName("")
-            setPassword("")
-            ToastAndroid.show("Welcome to Chat App! Your Account has Created Successfully", ToastAndroid.LONG)
-            navigation.navigate("Inbox")
+          let token_id= await localStorage.getItemString("token_id")
+          await auth().createUserWithEmailAndPassword(email, password);
+          await addUserToDatabase(name,token_id)
+          setEmail("")
+          setName("")
+          setPassword("")
+          ToastAndroid.show("Welcome to Chat App! Your Account has Created Successfully", ToastAndroid.LONG)
+          navigation.navigate("Inbox")
         } catch (error) {
             ToastAndroid.show(error?.message ? error?.message : "", ToastAndroid.LONG)
 
